@@ -670,9 +670,9 @@ function OxLib:CreateWindow(cfg)
 			ColorSequenceKeypoint.new(1, Theme.White),
 		}),
 		Transparency = NumberSequence.new({
-			ColorSequenceKeypoint.new(0, 0.35),
-			ColorSequenceKeypoint.new(0.45, 0.82),
-			ColorSequenceKeypoint.new(1, 1),
+			NumberSequenceKeypoint.new(0, 0.35),
+			NumberSequenceKeypoint.new(0.45, 0.82),
+			NumberSequenceKeypoint.new(1, 1),
 		}),
 	})
 	glossGrad.Parent = Gloss
@@ -689,8 +689,8 @@ function OxLib:CreateWindow(cfg)
 	local shadeGrad = New("UIGradient", {
 		Rotation = 90,
 		Transparency = NumberSequence.new({
-			ColorSequenceKeypoint.new(0, 1),
-			ColorSequenceKeypoint.new(1, 0.55),
+			NumberSequenceKeypoint.new(0, 1),
+			NumberSequenceKeypoint.new(1, 0.55),
 		}),
 	})
 	shadeGrad.Parent = Shade
