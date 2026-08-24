@@ -827,11 +827,8 @@ function OxLib:CreateWindow(cfg)
 			tab.Indicator.BackgroundTransparency = active and 0 or 1
 			tab.Label.TextColor3 = active and Theme.Text or Theme.TextSub
 			Icons.Recolor(tab.IconInner, active and Theme.Accent or Theme.TextDim)
-			local ps = tab.Page:FindFirstChildOfClass("UIScale") or New("UIScale", { Scale = 1, Parent = tab.Page })
-			if active then
-				ps.Scale = 0.97
-				Tween(ps, 0.3, { Scale = 1 }, Enum.EasingStyle.Quart)
-			end
+				local ps = tab.Page:FindFirstChildOfClass("UIScale") or New("UIScale", { Scale = 1, Parent = tab.Page })
+				ps.Scale = 1
 		end
 	end
 
@@ -1017,8 +1014,9 @@ function OxLib:CreateWindow(cfg)
 
 				local thumb = New("Frame", {
 					BackgroundColor3 = Theme.White,
-					Position = UDim2.new(0, state and 22 or 3, 0.5, -7.5),
-					Size = UDim2.fromOffset(15, 15),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					Position = UDim2.new(0, state and 27 or 13, 0.5, 0),
+					Size = UDim2.fromOffset(16, 16),
 					Parent = sw,
 				}, { Corner(8) })
 				local thumbStroke = New("UIStroke", { Color = Theme.StrokeStrong, Thickness = 1, Transparency = state and 1 or 0 })
@@ -1053,7 +1051,7 @@ function OxLib:CreateWindow(cfg)
 					state = v
 					bindAccent(v)
 					Tween(sw, 0.28, { BackgroundColor3 = v and Theme.Accent or Theme.StrokeStrong }, Enum.EasingStyle.Back)
-					Tween(thumb, 0.32, { Position = UDim2.new(0, v and 22 or 3, 0.5, -7.5) }, Enum.EasingStyle.Back)
+					Tween(thumb, 0.32, { Position = UDim2.new(0, v and 27 or 13, 0.5, 0) }, Enum.EasingStyle.Back)
 					Tween(thumbStroke, 0.2, { Transparency = v and 1 or 0 })
 					if t.Flag then
 						OxLib.Flags[t.Flag] = v
