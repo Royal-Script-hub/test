@@ -764,6 +764,17 @@ function OxLib:CreateWindow(cfg)
 	local minBtn = TitleBarButton(-52, "min")
 	local closeBtn = TitleBarButton(-16, "close")
 
+	local CornerIcon = New("ImageLabel", {
+		Name = "CornerIcon",
+		BackgroundTransparency = 1,
+		Image = "rbxassetid://105839011064173",
+		ScaleType = Enum.ScaleType.Fit,
+		AnchorPoint = Vector2.new(1, 0.5),
+		Position = UDim2.new(1, -92, 0.5, 0),
+		Size = UDim2.fromOffset(26, 26),
+		Parent = TitleBar,
+	})
+
 	local Body = New("Frame", {
 		Name = "Body",
 		BackgroundTransparency = 1,
