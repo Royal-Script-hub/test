@@ -184,14 +184,6 @@ pcall(function()
 	end
 end)
 
-local Blur = nil
-pcall(function()
-	Blur = Instance.new("BlurEffect")
-	Blur.Size = 16
-	Blur.Enabled = false
-	Blur.Parent = game:GetService("Lighting")
-end)
-
 local function TrimNumber(n)
 	local s = tostring(n)
 	if string.find(s, ".", 1, true) then
@@ -594,11 +586,6 @@ function OxLib:Unload()
 	for _, c in ipairs(Connections) do
 		pcall(function()
 			c:Disconnect()
-		end)
-	end
-	if Blur then
-		pcall(function()
-			Blur:Destroy()
 		end)
 	end
 	Gui:Destroy()
@@ -1636,25 +1623,27 @@ function OxLib:CreateWindow(cfg)
 
 				local bgColor = Theme.BgSoft
 				local txtColor = Theme.Text
-				local hoverColor = Theme.Fill
-				local baseTrans = 0.32
-				local hoverTrans = 0.18
+				local hoverColor = Theme.White
+				local baseTrans = 0.35
+				local hoverTrans = 0.15
 				local strokeColor = Theme.Stroke
-				local strokeTrans = 0.4
+				local strokeTrans = 0.35
 				if variant == "primary" then
 					bgColor = Theme.Accent
 					txtColor = Theme.White
-					hoverColor = Theme.White:Lerp(Theme.Accent, 0.78)
-					baseTrans = 0.1
-					hoverTrans = 0.02
+					hoverColor = Theme.Accent:Lerp(Theme.White, 0.16)
+					baseTrans = 0.12
+					hoverTrans = 0.04
 					strokeColor = Theme.Accent
-					strokeTrans = 0.45
+					strokeTrans = 0.4
 				elseif variant == "danger" then
-					bgColor = Theme.White:Lerp(Theme.Danger, 0.14)
-					txtColor = Theme.Danger
-					hoverColor = Theme.White:Lerp(Theme.Danger, 0.06)
-					baseTrans = 0.25
-					hoverTrans = 0.12
+					bgColor = Theme.Danger
+					txtColor = Theme.White
+					hoverColor = Theme.Danger:Lerp(Theme.White, 0.14)
+					baseTrans = 0.16
+					hoverTrans = 0.06
+					strokeColor = Theme.Danger
+					strokeTrans = 0.4
 				end
 
 				local btn = New("TextButton", {
@@ -1667,15 +1656,16 @@ function OxLib:CreateWindow(cfg)
 					BackgroundTransparency = baseTrans,
 					Size = UDim2.fromScale(1, 1),
 					Parent = row,
-				}, { Corner(11) })
+				}, { Corner(12) })
 				New("UIStroke", { Color = strokeColor, Thickness = 1, Transparency = strokeTrans }).Parent = btn
+				GlassSheen(btn)
 
 				if variant == "primary" then
 					RegAccent(btn, "BackgroundColor3", "raw")
 					RegAccent(btn:FindFirstChildOfClass("UIStroke"), "Color", "raw")
 				end
 
-				HookHoverLift(btn, hoverColor, bgColor, { baseTrans = baseTrans, hoverTrans = hoverTrans, scale = 1.025, StrokeColor = strokeColor, glowTrans = strokeTrans })
+				HookHoverLift(btn, hoverColor, bgColor, { baseTrans = baseTrans, hoverTrans = hoverTrans, scale = 1.03, StrokeColor = strokeColor, glowTrans = strokeTrans })
 				HookRipple(btn, variant == "default" and Theme.TextSub or txtColor)
 
 				btn.Activated:Connect(function()
@@ -1801,9 +1791,6 @@ function OxLib:CreateWindow(cfg)
 			Root.Visible = true
 			Halo.Visible = true
 		end
-		if Blur then
-			Blur.Enabled = v
-		end
 		Tween(Scale, 0.38, { Scale = v and 1 or 0.9 }, Enum.EasingStyle.Back)
 		local haloStroke = Halo:FindFirstChildOfClass("UIStroke")
 		Tween(haloStroke, 0.3, { Transparency = v and 0.6 or 1 })
@@ -1911,9 +1898,6 @@ function OxLib:CreateWindow(cfg)
 	end
 
 	Scale.Scale = 0.9
-	if Blur then
-		Blur.Enabled = true
-	end
 	local haloStroke = Halo:FindFirstChildOfClass("UIStroke")
 	if haloStroke then
 		haloStroke.Transparency = 1
