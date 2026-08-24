@@ -81,11 +81,7 @@ local function GlassSheen(frame)
 	local base = frame.BackgroundColor3
 	local g = New("UIGradient", {
 		Rotation = 90,
-		Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, base:Lerp(Theme.White, 0.2)),
-			ColorSequenceKeypoint.new(0.55, base),
-			ColorSequenceKeypoint.new(1, base:Lerp(Color3.fromRGB(225, 230, 242), 0.08)),
-		}),
+		Color = ColorSequence.new(base:Lerp(Theme.White, 0.2), base:Lerp(Color3.fromRGB(225, 230, 242), 0.08)),
 	})
 	g.Parent = frame
 	return g
@@ -664,16 +660,7 @@ function OxLib:CreateWindow(cfg)
 	}, { Corner(22) })
 	local glossGrad = New("UIGradient", {
 		Rotation = 62,
-		Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, Theme.White),
-			ColorSequenceKeypoint.new(0.5, Theme.White),
-			ColorSequenceKeypoint.new(1, Theme.White),
-		}),
-		Transparency = NumberSequence.new({
-			NumberSequenceKeypoint.new(0, 0.35),
-			NumberSequenceKeypoint.new(0.45, 0.82),
-			NumberSequenceKeypoint.new(1, 1),
-		}),
+		Color = ColorSequence.new(Theme.White, Color3.fromRGB(222, 230, 245)),
 	})
 	glossGrad.Parent = Gloss
 
@@ -688,10 +675,7 @@ function OxLib:CreateWindow(cfg)
 	}, { Corner(22) })
 	local shadeGrad = New("UIGradient", {
 		Rotation = 90,
-		Transparency = NumberSequence.new({
-			NumberSequenceKeypoint.new(0, 1),
-			NumberSequenceKeypoint.new(1, 0.55),
-		}),
+		Color = ColorSequence.new(Theme.Bg, Color3.fromRGB(206, 210, 224)),
 	})
 	shadeGrad.Parent = Shade
 
