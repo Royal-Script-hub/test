@@ -632,7 +632,7 @@ function OxLib:CreateWindow(cfg)
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.new(0.5, 0, 0.5, 0),
 		Size = UDim2.fromOffset(width, height),
-		ClipsDescendants = true,
+		ClipsDescendants = false,
 		Parent = Shell,
 	}, { Corner(22) })
 	New("UIStroke", { Color = Theme.White, Thickness = 1.5, Transparency = 0.22 }).Parent = Root
@@ -768,11 +768,12 @@ function OxLib:CreateWindow(cfg)
 		Name = "CornerIcon",
 		BackgroundTransparency = 1,
 		Image = cfg.CornerIconImage or "rbxassetid://105839011064173",
+		ImageTransparency = cfg.CornerIconTransparency or 0,
 		ScaleType = Enum.ScaleType.Fit,
 		AnchorPoint = Vector2.new(1, 0.5),
 		Position = cfg.CornerIconPos or UDim2.new(1, -16, 0, 28),
 		Size = cfg.CornerIconSize or UDim2.fromOffset(26, 26),
-		Parent = Shell,
+		Parent = Root,
 	})
 	New("UICorner", { CornerRadius = UDim.new(0, 8), Parent = CornerIcon })
 
@@ -1637,27 +1638,27 @@ function OxLib:CreateWindow(cfg)
 
 				local bgColor = Theme.BgSoft
 				local txtColor = Theme.Text
-				local hoverColor = Theme.White
-				local baseTrans = 0.35
-				local hoverTrans = 0.15
+				local hoverColor = Theme.BgSofter
+				local baseTrans = 0.22
+				local hoverTrans = 0.1
 				local strokeColor = Theme.Stroke
-				local strokeTrans = 0.35
+				local strokeTrans = 0.3
 				if variant == "primary" then
 					bgColor = Theme.Accent
 					txtColor = Theme.White
-					hoverColor = Theme.Accent:Lerp(Theme.White, 0.16)
-					baseTrans = 0.12
-					hoverTrans = 0.04
+					hoverColor = Theme.Accent:Lerp(Theme.White, 0.18)
+					baseTrans = 0.1
+					hoverTrans = 0.05
 					strokeColor = Theme.Accent
-					strokeTrans = 0.4
+					strokeTrans = 0.35
 				elseif variant == "danger" then
 					bgColor = Theme.Danger
 					txtColor = Theme.White
-					hoverColor = Theme.Danger:Lerp(Theme.White, 0.14)
-					baseTrans = 0.16
+					hoverColor = Theme.Danger:Lerp(Theme.White, 0.16)
+					baseTrans = 0.14
 					hoverTrans = 0.06
 					strokeColor = Theme.Danger
-					strokeTrans = 0.4
+					strokeTrans = 0.35
 				end
 
 				local btn = New("TextButton", {
@@ -1670,16 +1671,17 @@ function OxLib:CreateWindow(cfg)
 					BackgroundTransparency = baseTrans,
 					Size = UDim2.fromScale(1, 1),
 					Parent = row,
-				}, { Corner(12) })
-				New("UIStroke", { Color = strokeColor, Thickness = 1, Transparency = strokeTrans }).Parent = btn
+				}, { Corner(11) })
+				local btnStroke = New("UIStroke", { Color = strokeColor, Thickness = 1, Transparency = strokeTrans })
+				btnStroke.Parent = btn
 				GlassSheen(btn)
 
-				if variant == "primary" then
+				if variant ~= "default" then
 					RegAccent(btn, "BackgroundColor3", "raw")
-					RegAccent(btn:FindFirstChildOfClass("UIStroke"), "Color", "raw")
+					RegAccent(btnStroke, "Color", "raw")
 				end
 
-				HookHoverLift(btn, hoverColor, bgColor, { baseTrans = baseTrans, hoverTrans = hoverTrans, scale = 1.03, StrokeColor = strokeColor, glowTrans = strokeTrans })
+				HookHoverLift(btn, hoverColor, bgColor, { baseTrans = baseTrans, hoverTrans = hoverTrans, scale = 1.02, StrokeColor = strokeColor, glowTrans = strokeTrans })
 				HookRipple(btn, variant == "default" and Theme.TextSub or txtColor)
 
 				btn.Activated:Connect(function()
