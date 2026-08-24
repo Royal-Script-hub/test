@@ -767,15 +767,16 @@ function OxLib:CreateWindow(cfg)
 	local CornerIcon = New("ImageLabel", {
 		Name = "CornerIcon",
 		BackgroundTransparency = 1,
-		Image = "rbxassetid://105839011064173",
+		Image = cfg.CornerIconImage or "rbxassetid://105839011064173",
 		ScaleType = Enum.ScaleType.Fit,
 		AnchorPoint = Vector2.new(1, 0.5),
-		Position = UDim2.new(1, -16, 0.5, 0),
-		Size = UDim2.fromOffset(26, 26),
+		Position = cfg.CornerIconPos or UDim2.new(1, -16, 0.5, 0),
+		Size = cfg.CornerIconSize or UDim2.fromOffset(26, 26),
 		Parent = TitleBar,
 	})
 	New("UICorner", { CornerRadius = UDim.new(0, 8), Parent = CornerIcon })
-	New("UIStroke", { Color = Theme.Accent, Thickness = 2, Parent = CornerIcon })
+
+	Window.CornerIcon = CornerIcon
 
 	local Body = New("Frame", {
 		Name = "Body",
