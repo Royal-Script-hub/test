@@ -761,20 +761,8 @@ function OxLib:CreateWindow(cfg)
 		return b
 	end
 
-	local minBtn = TitleBarButton(-52, "min")
-	local closeBtn = TitleBarButton(-16, "close")
-
-	local CornerIconBox = New("Frame", {
-		Name = "CornerIconBox",
-		BackgroundColor3 = Theme.Accent,
-		BackgroundTransparency = 0.2,
-		AnchorPoint = Vector2.new(1, 0.5),
-		Position = UDim2.new(1, -92, 0.5, 0),
-		Size = UDim2.fromOffset(26, 26),
-		ZIndex = 1,
-		Parent = TitleBar,
-	})
-	New("UICorner", { CornerRadius = UDim.new(0, 8), Parent = CornerIconBox })
+	local minBtn = TitleBarButton(-88, "min")
+	local closeBtn = TitleBarButton(-52, "close")
 
 	local CornerIcon = New("ImageLabel", {
 		Name = "CornerIcon",
@@ -782,11 +770,12 @@ function OxLib:CreateWindow(cfg)
 		Image = "rbxassetid://105839011064173",
 		ScaleType = Enum.ScaleType.Fit,
 		AnchorPoint = Vector2.new(1, 0.5),
-		Position = UDim2.new(1, -92, 0.5, 0),
+		Position = UDim2.new(1, -16, 0.5, 0),
 		Size = UDim2.fromOffset(26, 26),
-		ZIndex = 2,
 		Parent = TitleBar,
 	})
+	New("UICorner", { CornerRadius = UDim.new(0, 8), Parent = CornerIcon })
+	New("UIStroke", { Color = Theme.Accent, Thickness = 2, Parent = CornerIcon })
 
 	local Body = New("Frame", {
 		Name = "Body",
