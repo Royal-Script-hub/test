@@ -897,13 +897,7 @@ function OxLib:CreateWindow(cfg)
 			PaddingBottom = UDim.new(0, 16),
 		}).Parent = PageScroll
 
-		local Page = New("Frame", {
-			Name = "Content",
-			BackgroundTransparency = 1,
-			Size = UDim2.new(1, 0, 0, 0),
-			AutomaticSize = Enum.AutomaticSize.Y,
-			Parent = PageScroll,
-		})
+		local Page = PageScroll
 		New("UIListLayout", { Padding = UDim.new(0, 12), SortOrder = Enum.SortOrder.LayoutOrder }).Parent = Page
 
 		Tab.Button = TabBtn
