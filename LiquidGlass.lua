@@ -22,7 +22,7 @@ local Theme = {
 	Fill = Color3.fromRGB(240, 242, 247),
 	White = Color3.fromRGB(255, 255, 255),
 	Danger = Color3.fromRGB(255, 86, 94),
-	GlassTrans = 0.2,
+	GlassTrans = 0.42,
 	GlowTrans = 0.55,
 }
 OxLib.Theme = Theme
@@ -413,13 +413,13 @@ function OxLib:Notify(cfg)
 	local card = New("Frame", {
 		Name = "NotifyCard",
 		BackgroundColor3 = Theme.Bg,
-		BackgroundTransparency = 0.16,
+		BackgroundTransparency = 0.3,
 		Size = UDim2.new(1, 0, 1, 0),
 		ClipsDescendants = true,
 		Position = UDim2.new(0, 350, 0, 0),
 		Parent = wrapper,
 	}, { Corner(15) })
-	Glassify(card, { Radius = 15, Transparency = 0.16, GlowTrans = 0.4 })
+	Glassify(card, { Radius = 15, Transparency = 0.3, GlowTrans = 0.4 })
 
 	local badge = New("Frame", {
 		BackgroundColor3 = Theme.White:Lerp(Theme.Accent, 0.12),
@@ -632,7 +632,7 @@ function OxLib:CreateWindow(cfg)
 	local Root = New(RootClass, {
 		Name = "OxWindow",
 		BackgroundColor3 = Theme.Bg,
-		BackgroundTransparency = 0.18,
+		BackgroundTransparency = 0.32,
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.new(0.5, 0, 0.5, 0),
 		Size = UDim2.fromOffset(width, height),
@@ -746,7 +746,7 @@ function OxLib:CreateWindow(cfg)
 		Size = UDim2.new(0, 176, 1, 0),
 		Parent = Body,
 	})
-	Glassify(Sidebar, { Radius = 0, Transparency = 0.28, GlowTrans = 0.45 })
+	Glassify(Sidebar, { Radius = 0, Transparency = 0.4, GlowTrans = 0.45 })
 	New("Frame", {
 		BackgroundColor3 = Theme.Stroke,
 		Position = UDim2.new(1, -1, 0, 0),
@@ -1234,12 +1234,12 @@ function OxLib:CreateWindow(cfg)
 				})
 			local listBox = New("Frame", {
 				BackgroundColor3 = Theme.BgSoft,
-				BackgroundTransparency = 0.16,
+				BackgroundTransparency = 0.32,
 				Size = UDim2.new(1, 0, 0, 0),
 				AutomaticSize = Enum.AutomaticSize.Y,
 				Parent = listWrap,
 			}, { Corner(12) })
-			Glassify(listBox, { Radius = 12, Transparency = 0.16, GlowTrans = 0.4 })
+			Glassify(listBox, { Radius = 12, Transparency = 0.32, GlowTrans = 0.4 })
 				New("UIPadding", {
 					PaddingTop = UDim.new(0, 4),
 					PaddingLeft = UDim.new(0, 4),
@@ -1443,13 +1443,13 @@ function OxLib:CreateWindow(cfg)
 					TextColor3 = Theme.TextSub,
 					AutoButtonColor = false,
 					BackgroundColor3 = Theme.BgSoft,
-					BackgroundTransparency = 0.28,
+					BackgroundTransparency = 0.35,
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, 0, 0.5, 0),
 					Size = UDim2.fromOffset(100, 26),
 					Parent = row,
 				}, { Corner(8) })
-				HookHoverLift(btn, Theme.Fill, Theme.BgSoft, { baseTrans = 0.28, hoverTrans = 0.16, scale = 1.04 })
+				HookHoverLift(btn, Theme.Fill, Theme.BgSoft, { baseTrans = 0.35, hoverTrans = 0.2, scale = 1.04 })
 
 				local listening = false
 
@@ -1530,7 +1530,7 @@ function OxLib:CreateWindow(cfg)
 				local boxStroke = New("UIStroke", { Color = Theme.StrokeStrong, Thickness = 1 })
 				local box = New("TextBox", {
 					BackgroundColor3 = Theme.BgSoft,
-					BackgroundTransparency = 0.22,
+					BackgroundTransparency = 0.3,
 					Text = t.Default and tostring(t.Default) or "",
 					PlaceholderText = t.Placeholder or "...",
 					PlaceholderColor3 = Theme.TextDim,
@@ -1655,12 +1655,12 @@ function OxLib:CreateWindow(cfg)
 				})
 				local card = New("Frame", {
 				BackgroundColor3 = Theme.BgSoft,
-				BackgroundTransparency = 0.22,
+				BackgroundTransparency = 0.4,
 				Size = UDim2.new(1, 0, 0, 0),
 				AutomaticSize = Enum.AutomaticSize.Y,
 				Parent = wrap,
 			}, { Corner(12) })
-			Glassify(card, { Radius = 12, Transparency = 0.22, GlowTrans = 0.4 })
+			Glassify(card, { Radius = 12, Transparency = 0.4, GlowTrans = 0.4 })
 				New("UIPadding", {
 					PaddingTop = UDim.new(0, 10),
 					PaddingLeft = UDim.new(0, 12),
