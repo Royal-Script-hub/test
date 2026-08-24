@@ -827,10 +827,6 @@ function OxLib:CreateWindow(cfg)
 			tab.Indicator.BackgroundTransparency = active and 0 or 1
 			tab.Label.TextColor3 = active and Theme.Text or Theme.TextSub
 			Icons.Recolor(tab.IconInner, active and Theme.Accent or Theme.TextDim)
-				if active then
-					tab.Page.GroupTransparency = 0.4
-					Tween(tab.Page, 0.34, { GroupTransparency = 0 }, Enum.EasingStyle.Back)
-				end
 		end
 	end
 
