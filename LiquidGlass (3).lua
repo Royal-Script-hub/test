@@ -10,20 +10,20 @@ local HttpSvc = game:GetService("HttpService")
 local LocalPlayer = Players.LocalPlayer
 
 local Theme = {
-	Accent = Color3.fromRGB(120, 160, 255),
-	Bg = Color3.fromRGB(20, 22, 30),
-	BgSoft = Color3.fromRGB(34, 37, 50),
-	BgSofter = Color3.fromRGB(46, 49, 64),
-	Stroke = Color3.fromRGB(104, 116, 150),
-	StrokeStrong = Color3.fromRGB(150, 162, 198),
-	Text = Color3.fromRGB(240, 242, 250),
-	TextSub = Color3.fromRGB(170, 176, 198),
-	TextDim = Color3.fromRGB(120, 128, 152),
-	Fill = Color3.fromRGB(58, 62, 80),
+	Accent = Color3.fromRGB(255, 138, 40),
+	Bg = Color3.fromRGB(255, 255, 255),
+	BgSoft = Color3.fromRGB(244, 246, 250),
+	BgSofter = Color3.fromRGB(250, 251, 253),
+	Stroke = Color3.fromRGB(226, 229, 238),
+	StrokeStrong = Color3.fromRGB(198, 204, 218),
+	Text = Color3.fromRGB(28, 30, 38),
+	TextSub = Color3.fromRGB(120, 126, 142),
+	TextDim = Color3.fromRGB(150, 156, 172),
+	Fill = Color3.fromRGB(240, 242, 247),
 	White = Color3.fromRGB(255, 255, 255),
-	Danger = Color3.fromRGB(255, 96, 112),
-	GlassTrans = 0.42,
-	GlowTrans = 0.72,
+	Danger = Color3.fromRGB(255, 86, 94),
+	GlassTrans = 0.2,
+	GlowTrans = 0.55,
 }
 OxLib.Theme = Theme
 
@@ -77,32 +77,18 @@ local function Corner(radius)
 	return New("UICorner", { CornerRadius = UDim.new(0, radius) })
 end
 
-local function GlassSheen(frame, radius)
-	local sheen = New("Frame", {
-		Name = "Sheen",
-		BackgroundColor3 = Theme.White,
-		BackgroundTransparency = 0,
-		Size = UDim2.fromScale(1, 1),
-		ZIndex = frame.ZIndex,
-		Active = false,
-		Parent = frame,
-	})
+local function GlassSheen(frame)
+	local base = frame.BackgroundColor3
 	local g = New("UIGradient", {
-		Rotation = 95,
+		Rotation = 90,
 		Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(232, 238, 255)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(190, 205, 245)),
-		}),
-		Transparency = NumberSequence.new({
-			NumberSequenceKeypoint.new(0, 0.74),
-			NumberSequenceKeypoint.new(0.5, 0.93),
-			NumberSequenceKeypoint.new(1, 1),
+			ColorSequenceKeypoint.new(0, base:Lerp(Theme.White, 0.2)),
+			ColorSequenceKeypoint.new(0.55, base),
+			ColorSequenceKeypoint.new(1, base:Lerp(Color3.fromRGB(225, 230, 242), 0.08)),
 		}),
 	})
-	g.Parent = sheen
-	Corner(radius).Parent = sheen
-	return sheen
+	g.Parent = frame
+	return g
 end
 
 local function Glassify(frame, opts)
@@ -119,12 +105,12 @@ local function Glassify(frame, opts)
 	end
 	if frame:FindFirstChildOfClass("UIStroke") == nil then
 		New("UIStroke", {
-			Color = opts.StrokeColor or Theme.White,
+			Color = opts.StrokeColor or Theme.Stroke,
 			Thickness = opts.StrokeThick or 1,
-			Transparency = opts.GlowTrans or Theme.GlowTrans,
+			Transparency = opts.GlowTrans or 0.4,
 		}).Parent = frame
 	end
-	GlassSheen(frame, radius)
+	GlassSheen(frame)
 	if opts.Transparency then
 		frame.BackgroundTransparency = opts.Transparency
 	end
@@ -427,13 +413,13 @@ function OxLib:Notify(cfg)
 	local card = New("Frame", {
 		Name = "NotifyCard",
 		BackgroundColor3 = Theme.Bg,
-		BackgroundTransparency = 0.3,
+		BackgroundTransparency = 0.16,
 		Size = UDim2.new(1, 0, 1, 0),
 		ClipsDescendants = true,
 		Position = UDim2.new(0, 350, 0, 0),
 		Parent = wrapper,
 	}, { Corner(15) })
-	Glassify(card, { Radius = 15, Transparency = 0.3, GlowTrans = 0.55 })
+	Glassify(card, { Radius = 15, Transparency = 0.16, GlowTrans = 0.4 })
 
 	local badge = New("Frame", {
 		BackgroundColor3 = Theme.White:Lerp(Theme.Accent, 0.12),
@@ -622,13 +608,6 @@ function OxLib:CreateWindow(cfg)
 	local height = cfg.Size and cfg.Size.Y.Offset or 440
 
 	local RootClass = "Frame"
-	local cgOk = pcall(function()
-		local t = Instance.new("CanvasGroup")
-		t:Destroy()
-	end)
-	if cgOk then
-		RootClass = "CanvasGroup"
-	end
 
 	local Shell = New("Frame", {
 		Name = "Shell",
@@ -648,20 +627,20 @@ function OxLib:CreateWindow(cfg)
 		Size = UDim2.fromOffset(width + 14, height + 14),
 		Parent = Shell,
 	}, { Corner(26) })
-	New("UIStroke", { Color = Theme.White, Thickness = 2, Transparency = 0.9 }).Parent = Halo
+	New("UIStroke", { Color = Theme.Accent, Thickness = 2, Transparency = 0.85 }).Parent = Halo
 
 	local Root = New(RootClass, {
 		Name = "OxWindow",
 		BackgroundColor3 = Theme.Bg,
-		BackgroundTransparency = 0.32,
+		BackgroundTransparency = 0.18,
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.new(0.5, 0, 0.5, 0),
 		Size = UDim2.fromOffset(width, height),
 		ClipsDescendants = true,
 		Parent = Shell,
 	}, { Corner(20) })
-	New("UIStroke", { Color = Theme.White, Thickness = 1, Transparency = Theme.GlowTrans }).Parent = Root
-	GlassSheen(Root, 20)
+	New("UIStroke", { Color = Theme.Stroke, Thickness = 1, Transparency = 0.35 }).Parent = Root
+	GlassSheen(Root)
 
 	local Scale = New("UIScale", { Scale = 1, Parent = Root })
 
@@ -767,7 +746,7 @@ function OxLib:CreateWindow(cfg)
 		Size = UDim2.new(0, 176, 1, 0),
 		Parent = Body,
 	})
-	Glassify(Sidebar, { Radius = 0, Transparency = 0.45, GlowTrans = 0.85 })
+	Glassify(Sidebar, { Radius = 0, Transparency = 0.28, GlowTrans = 0.45 })
 	New("Frame", {
 		BackgroundColor3 = Theme.Stroke,
 		Position = UDim2.new(1, -1, 0, 0),
@@ -823,7 +802,7 @@ function OxLib:CreateWindow(cfg)
 			LayoutOrder = Tab.Order,
 			Parent = TabList,
 		}, { Corner(12) })
-		Glassify(TabBtn, { Radius = 12, Transparency = 0.5, GlowTrans = 0.8 })
+		Glassify(TabBtn, { Radius = 12, Transparency = 0.5, GlowTrans = 0.45 })
 
 		local Indicator = New("Frame", {
 			BackgroundColor3 = Theme.Accent,
@@ -1255,12 +1234,12 @@ function OxLib:CreateWindow(cfg)
 				})
 			local listBox = New("Frame", {
 				BackgroundColor3 = Theme.BgSoft,
-				BackgroundTransparency = 0.3,
+				BackgroundTransparency = 0.16,
 				Size = UDim2.new(1, 0, 0, 0),
 				AutomaticSize = Enum.AutomaticSize.Y,
 				Parent = listWrap,
 			}, { Corner(12) })
-			Glassify(listBox, { Radius = 12, Transparency = 0.3, GlowTrans = 0.55 })
+			Glassify(listBox, { Radius = 12, Transparency = 0.16, GlowTrans = 0.4 })
 				New("UIPadding", {
 					PaddingTop = UDim.new(0, 4),
 					PaddingLeft = UDim.new(0, 4),
@@ -1464,13 +1443,13 @@ function OxLib:CreateWindow(cfg)
 					TextColor3 = Theme.TextSub,
 					AutoButtonColor = false,
 					BackgroundColor3 = Theme.BgSoft,
-					BackgroundTransparency = 0.35,
+					BackgroundTransparency = 0.28,
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, 0, 0.5, 0),
 					Size = UDim2.fromOffset(100, 26),
 					Parent = row,
 				}, { Corner(8) })
-				HookHoverLift(btn, Theme.Fill, Theme.BgSoft, { baseTrans = 0.35, hoverTrans = 0.2, scale = 1.04 })
+				HookHoverLift(btn, Theme.Fill, Theme.BgSoft, { baseTrans = 0.28, hoverTrans = 0.16, scale = 1.04 })
 
 				local listening = false
 
@@ -1551,7 +1530,7 @@ function OxLib:CreateWindow(cfg)
 				local boxStroke = New("UIStroke", { Color = Theme.StrokeStrong, Thickness = 1 })
 				local box = New("TextBox", {
 					BackgroundColor3 = Theme.BgSoft,
-					BackgroundTransparency = 0.3,
+					BackgroundTransparency = 0.22,
 					Text = t.Default and tostring(t.Default) or "",
 					PlaceholderText = t.Placeholder or "...",
 					PlaceholderColor3 = Theme.TextDim,
@@ -1613,8 +1592,8 @@ function OxLib:CreateWindow(cfg)
 				local hoverColor = Theme.Fill
 				local baseTrans = 0.32
 				local hoverTrans = 0.18
-				local strokeColor = Theme.White
-				local strokeTrans = Theme.GlowTrans
+				local strokeColor = Theme.Stroke
+				local strokeTrans = 0.4
 				if variant == "primary" then
 					bgColor = Theme.Accent
 					txtColor = Theme.White
@@ -1675,13 +1654,13 @@ function OxLib:CreateWindow(cfg)
 					Parent = SecBody,
 				})
 				local card = New("Frame", {
-					BackgroundColor3 = Theme.BgSoft,
-					BackgroundTransparency = 0.4,
-					Size = UDim2.new(1, 0, 0, 0),
-					AutomaticSize = Enum.AutomaticSize.Y,
-					Parent = wrap,
-				}, { Corner(12) })
-				Glassify(card, { Radius = 12, Transparency = 0.4, GlowTrans = 0.6 })
+				BackgroundColor3 = Theme.BgSoft,
+				BackgroundTransparency = 0.22,
+				Size = UDim2.new(1, 0, 0, 0),
+				AutomaticSize = Enum.AutomaticSize.Y,
+				Parent = wrap,
+			}, { Corner(12) })
+			Glassify(card, { Radius = 12, Transparency = 0.22, GlowTrans = 0.4 })
 				New("UIPadding", {
 					PaddingTop = UDim.new(0, 10),
 					PaddingLeft = UDim.new(0, 12),
@@ -1778,9 +1757,6 @@ function OxLib:CreateWindow(cfg)
 		Tween(Scale, 0.38, { Scale = v and 1 or 0.9 }, Enum.EasingStyle.Back)
 		local haloStroke = Halo:FindFirstChildOfClass("UIStroke")
 		Tween(haloStroke, 0.3, { Transparency = v and 0.9 or 1 })
-		if RootClass == "CanvasGroup" then
-			Tween(Root, 0.28, { GroupTransparency = v and 0 or 1 })
-		end
 		if not v then
 			task.delay(0.33, function()
 				if not visible then
@@ -1842,7 +1818,7 @@ function OxLib:CreateWindow(cfg)
 		}, { Corner(23) })
 		local fabStroke = New("UIStroke", { Color = Theme.Accent, Thickness = 1.5, Transparency = 0.4 })
 		fabStroke.Parent = fab
-		GlassSheen(fab, 23)
+		GlassSheen(fab)
 		RegAccent(fab, "BackgroundColor3", "raw")
 		RegAccent(fabStroke, "Color", "raw")
 		local fabIconHolder = New("Frame", { BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), Parent = fab })
@@ -1889,16 +1865,10 @@ function OxLib:CreateWindow(cfg)
 	if haloStroke then
 		haloStroke.Transparency = 1
 	end
-	if RootClass == "CanvasGroup" then
-		Root.GroupTransparency = 1
-	end
 	task.defer(function()
 		Tween(Scale, 0.55, { Scale = 1 }, Enum.EasingStyle.Back)
 		if haloStroke then
 			Tween(haloStroke, 0.5, { Transparency = 0.9 })
-		end
-		if RootClass == "CanvasGroup" then
-			Tween(Root, 0.4, { GroupTransparency = 0 })
 		end
 	end)
 
