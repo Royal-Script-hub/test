@@ -1008,7 +1008,7 @@ function OxLib:CreateWindow(cfg)
 				local state = t.Default == true
 
 				local sw = New("Frame", {
-					BackgroundColor3 = state and Theme.Accent or Theme.Fill,
+					BackgroundColor3 = state and Theme.Accent or Theme.StrokeStrong,
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, -4, 0.5, 0),
 					Size = UDim2.fromOffset(40, 21),
@@ -1021,7 +1021,7 @@ function OxLib:CreateWindow(cfg)
 					Size = UDim2.fromOffset(15, 15),
 					Parent = sw,
 				}, { Corner(8) })
-				local thumbStroke = New("UIStroke", { Color = Theme.StrokeStrong, Thickness = 1, Transparency = state and 1 or 0.2 })
+				local thumbStroke = New("UIStroke", { Color = Theme.StrokeStrong, Thickness = 1, Transparency = state and 1 or 0 })
 				thumbStroke.Parent = thumb
 
 				local accRef = nil
@@ -1052,9 +1052,9 @@ function OxLib:CreateWindow(cfg)
 				local function SetState(v, fire)
 					state = v
 					bindAccent(v)
-					Tween(sw, 0.28, { BackgroundColor3 = v and Theme.Accent or Theme.Fill }, Enum.EasingStyle.Back)
+					Tween(sw, 0.28, { BackgroundColor3 = v and Theme.Accent or Theme.StrokeStrong }, Enum.EasingStyle.Back)
 					Tween(thumb, 0.32, { Position = UDim2.new(0, v and 22 or 3, 0.5, -7.5) }, Enum.EasingStyle.Back)
-					Tween(thumbStroke, 0.2, { Transparency = v and 1 or 0.2 })
+					Tween(thumbStroke, 0.2, { Transparency = v and 1 or 0 })
 					if t.Flag then
 						OxLib.Flags[t.Flag] = v
 					end
@@ -1638,27 +1638,30 @@ function OxLib:CreateWindow(cfg)
 
 				local bgColor = Theme.BgSoft
 				local txtColor = Theme.Text
-				local hoverColor = Theme.BgSofter
-				local baseTrans = 0.22
-				local hoverTrans = 0.1
+				local hoverColor = Theme.White
+				local baseTrans = 0.2
+				local hoverTrans = 0.35
 				local strokeColor = Theme.Stroke
-				local strokeTrans = 0.3
+				local strokeTrans = 0.35
+				local glowColor = Theme.Accent
 				if variant == "primary" then
 					bgColor = Theme.Accent
 					txtColor = Theme.White
-					hoverColor = Theme.Accent:Lerp(Theme.White, 0.18)
-					baseTrans = 0.1
+					hoverColor = Theme.Accent:Lerp(Theme.White, 0.2)
+					baseTrans = 0.12
 					hoverTrans = 0.05
 					strokeColor = Theme.Accent
 					strokeTrans = 0.35
+					glowColor = Theme.Accent:Lerp(Theme.White, 0.35)
 				elseif variant == "danger" then
 					bgColor = Theme.Danger
 					txtColor = Theme.White
-					hoverColor = Theme.Danger:Lerp(Theme.White, 0.16)
+					hoverColor = Theme.Danger:Lerp(Theme.White, 0.18)
 					baseTrans = 0.14
 					hoverTrans = 0.06
 					strokeColor = Theme.Danger
 					strokeTrans = 0.35
+					glowColor = Theme.Danger:Lerp(Theme.White, 0.35)
 				end
 
 				local btn = New("TextButton", {
@@ -1681,7 +1684,7 @@ function OxLib:CreateWindow(cfg)
 					RegAccent(btnStroke, "Color", "raw")
 				end
 
-				HookHoverLift(btn, hoverColor, bgColor, { baseTrans = baseTrans, hoverTrans = hoverTrans, scale = 1.02, StrokeColor = strokeColor, glowTrans = strokeTrans })
+				HookHoverLift(btn, hoverColor, bgColor, { baseTrans = baseTrans, hoverTrans = hoverTrans, scale = 1.03, StrokeColor = strokeColor, glowTrans = strokeTrans, glow = glowColor })
 				HookRipple(btn, variant == "default" and Theme.TextSub or txtColor)
 
 				btn.Activated:Connect(function()
