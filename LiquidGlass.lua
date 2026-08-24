@@ -188,6 +188,14 @@ pcall(function()
 	end
 end)
 
+local Blur = nil
+pcall(function()
+	Blur = Instance.new("BlurEffect")
+	Blur.Size = 16
+	Blur.Enabled = false
+	Blur.Parent = game:GetService("Lighting")
+end)
+
 local function TrimNumber(n)
 	local s = tostring(n)
 	if string.find(s, ".", 1, true) then
@@ -592,6 +600,11 @@ function OxLib:Unload()
 			c:Disconnect()
 		end)
 	end
+	if Blur then
+		pcall(function()
+			Blur:Destroy()
+		end)
+	end
 	Gui:Destroy()
 end
 
@@ -626,7 +639,7 @@ function OxLib:CreateWindow(cfg)
 		Position = UDim2.new(0.5, 0, 0.5, 0),
 		Size = UDim2.fromOffset(width + 14, height + 14),
 		Parent = Shell,
-	}, { Corner(26) })
+	}, { Corner(30) })
 	New("UIStroke", { Color = Theme.Accent, Thickness = 2, Transparency = 0.85 }).Parent = Halo
 
 	local Root = New(RootClass, {
@@ -638,9 +651,58 @@ function OxLib:CreateWindow(cfg)
 		Size = UDim2.fromOffset(width, height),
 		ClipsDescendants = true,
 		Parent = Shell,
-	}, { Corner(20) })
-	New("UIStroke", { Color = Theme.Stroke, Thickness = 1, Transparency = 0.35 }).Parent = Root
+	}, { Corner(22) })
+	New("UIStroke", { Color = Theme.White, Thickness = 1.5, Transparency = 0.22 }).Parent = Root
 	GlassSheen(Root)
+
+	local Gloss = New("Frame", {
+		Name = "Gloss",
+		BackgroundColor3 = Theme.White,
+		BackgroundTransparency = 0.8,
+		Size = UDim2.new(1, 0, 0.46, 0),
+		Parent = Root,
+	}, { Corner(22) })
+	local glossGrad = New("UIGradient", {
+		Rotation = 62,
+		Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Theme.White),
+			ColorSequenceKeypoint.new(0.5, Theme.White),
+			ColorSequenceKeypoint.new(1, Theme.White),
+		}),
+		Transparency = NumberSequence.new({
+			ColorSequenceKeypoint.new(0, 0.35),
+			ColorSequenceKeypoint.new(0.45, 0.82),
+			ColorSequenceKeypoint.new(1, 1),
+		}),
+	})
+	glossGrad.Parent = Gloss
+
+	local Shade = New("Frame", {
+		Name = "Shade",
+		BackgroundColor3 = Color3.fromRGB(206, 210, 224),
+		BackgroundTransparency = 0.82,
+		Size = UDim2.new(1, 0, 0.4, 0),
+		Position = UDim2.new(0, 0, 1, 0),
+		AnchorPoint = Vector2.new(0, 1),
+		Parent = Root,
+	}, { Corner(22) })
+	local shadeGrad = New("UIGradient", {
+		Rotation = 90,
+		Transparency = NumberSequence.new({
+			ColorSequenceKeypoint.new(0, 1),
+			ColorSequenceKeypoint.new(1, 0.55),
+		}),
+	})
+	shadeGrad.Parent = Shade
+
+	task.spawn(function()
+		while not Unloaded and Gloss.Parent do
+			Tween(glossGrad, 4, { Offset = Vector2.new(0.35, 0.12) }, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+			task.wait(4.1)
+			Tween(glossGrad, 4, { Offset = Vector2.new(-0.35, -0.12) }, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+			task.wait(4.1)
+		end
+	end)
 
 	local Scale = New("UIScale", { Scale = 1, Parent = Root })
 
@@ -734,10 +796,11 @@ function OxLib:CreateWindow(cfg)
 	local Body = New("Frame", {
 		Name = "Body",
 		BackgroundTransparency = 1,
+		ClipsDescendants = true,
 		Position = UDim2.new(0, 0, 0, 56),
 		Size = UDim2.new(1, 0, 1, -56),
 		Parent = Root,
-	})
+	}, { Corner(22) })
 
 	local Sidebar = New("Frame", {
 		Name = "Sidebar",
@@ -1754,9 +1817,12 @@ function OxLib:CreateWindow(cfg)
 			Root.Visible = true
 			Halo.Visible = true
 		end
+		if Blur then
+			Blur.Enabled = v
+		end
 		Tween(Scale, 0.38, { Scale = v and 1 or 0.9 }, Enum.EasingStyle.Back)
 		local haloStroke = Halo:FindFirstChildOfClass("UIStroke")
-		Tween(haloStroke, 0.3, { Transparency = v and 0.9 or 1 })
+		Tween(haloStroke, 0.3, { Transparency = v and 0.6 or 1 })
 		if not v then
 			task.delay(0.33, function()
 				if not visible then
@@ -1861,6 +1927,9 @@ function OxLib:CreateWindow(cfg)
 	end
 
 	Scale.Scale = 0.9
+	if Blur then
+		Blur.Enabled = true
+	end
 	local haloStroke = Halo:FindFirstChildOfClass("UIStroke")
 	if haloStroke then
 		haloStroke.Transparency = 1
@@ -1868,7 +1937,7 @@ function OxLib:CreateWindow(cfg)
 	task.defer(function()
 		Tween(Scale, 0.55, { Scale = 1 }, Enum.EasingStyle.Back)
 		if haloStroke then
-			Tween(haloStroke, 0.5, { Transparency = 0.9 })
+			Tween(haloStroke, 0.5, { Transparency = 0.6 })
 		end
 	end)
 
