@@ -770,9 +770,9 @@ function OxLib:CreateWindow(cfg)
 		Image = cfg.CornerIconImage or "rbxassetid://105839011064173",
 		ScaleType = Enum.ScaleType.Fit,
 		AnchorPoint = Vector2.new(1, 0.5),
-		Position = cfg.CornerIconPos or UDim2.new(1, -16, 0.5, 0),
+		Position = cfg.CornerIconPos or UDim2.new(1, -16, 0, 28),
 		Size = cfg.CornerIconSize or UDim2.fromOffset(26, 26),
-		Parent = TitleBar,
+		Parent = Shell,
 	})
 	New("UICorner", { CornerRadius = UDim.new(0, 8), Parent = CornerIcon })
 
